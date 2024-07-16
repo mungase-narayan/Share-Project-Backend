@@ -1,8 +1,9 @@
 const express = require("express");
 const router = require("./router")
+const initDb = require("./config/db");
 
 const app = express();
-
+initDb();
 app.use(express.json())
 
 
