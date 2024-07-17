@@ -1,6 +1,12 @@
 const Joi = require("joi");
+const User = require("../model/user-model");
+const CustomErrorHandler = require("../services/custom-error-handler");
+
 class AuthController {
-    signup(req, res) {
+    constructor(authService) {
+        this.authService = authService;
+    }
+    async signup(req, res, next) {
         const { fullName, email, password, confirmPassword } = req.body;
 
         const signupSchema = Joi.object({
@@ -11,26 +17,15 @@ class AuthController {
         });
 
         const { error } = signupSchema.validate(req.body);
-        if (error) {
-            return res.status(400).json({
-                success: false,
-                message: "Please check all fields ",
-                error: error.message,
-            });
-        }
+        if (error) return next(error);
 
-        if (password !== confirmPassword) {
-            return res.status(400).json({
-                success: false,
-                message: "Password MisMatch",
-            });
-        }
+        const userExist = await this.authService.getUserByEmail(email);
+        if (!!userExist) return next(CustomErrorHandler.userExists());
 
-        res.status(200).json({
-            message: "data stored",
-        });
-
-        return res.json({ message: "Otp Sent Successfully" });
+        return res.json({ message: "User register successfully" });
+    }
+    login(req, res) {
+        return res.json({ message: "Login successful" });
     }
 }
 
