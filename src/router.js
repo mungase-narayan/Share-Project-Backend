@@ -7,7 +7,7 @@ const authService = new AuthService(UserModel);
 const authController = new AuthController(authService);
 
 router.post("/auth/sign-up", (req, res, next) =>
-    authController.signUp(req, res, next)
+    authController.signup(req, res, next)
 );
 router.post("/auth/login", (req, res, next) =>
     authController.login(req, res, next)

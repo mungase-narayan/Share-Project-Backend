@@ -10,7 +10,11 @@ class CustomErrorHandler extends Error {
     }
 
     static userExists() {
-        return new CustomErrorHandler(400, "User already exists");
+        return new CustomErrorHandler(400, message);
+    }
+
+    static wrongCredentials(message = "Email or Password is wrong!") {
+        return new customErrorHandler(401, message);
     }
 }
 
